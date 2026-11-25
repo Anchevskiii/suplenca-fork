@@ -5,6 +5,11 @@ venv/
 # prevedene Python datoteke, nastanejo samodejno
 __pycache__/
 *.pyc
+.pytest_cache/
+.coverage
+coverage.xml
+test.db
+coverage-frontend.txt
 
 # Node / React (frontend) 
 # knjižnice, ki jih namesti "npm install"
