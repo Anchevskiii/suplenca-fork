@@ -158,7 +158,7 @@ jobs:
         run: |
           if [ -n "$VERCEL_TOKEN" ]; then
             npm install -g vercel
-            mkdir -p .vercel/output/static
+            mkdir -p frontend .vercel/output/static
             cp -r artifacts/frontend-dist/* .vercel/output/static/
             printf '{"projectId":"%s","orgId":"%s"}' "$VERCEL_PROJECT_ID" "$VERCEL_ORG_ID" > .vercel/project.json
             printf '{"version":3,"routes":[{"handle":"filesystem"},{"src":"/(.*)","dest":"/index.html"}]}' > .vercel/output/config.json
