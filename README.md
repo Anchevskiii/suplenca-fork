@@ -1,10 +1,25 @@
 # Suplenca
 
+[![CI/CD Pipeline](https://github.com/Anchevskiii/suplenca-fork/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Anchevskiii/suplenca-fork/actions/workflows/ci-cd.yml)
+
 Spletna aplikacija za razporejanje nadomeščanj (suplenc) odsotnih učiteljev v srednji šoli.
 Organizator ob odsotnosti učitelja dobi seznam izpadlih ur in predlog primernih kandidatov
 po pravilih šole, učitelji vidijo svoje suplence, dijaki pa spremembe urnika svojega oddelka.
 
 Projekt nastaja pri predmetu Razvoj informacijskih rešitev in storitev (FERI, 2026/27).
+
+## Nameščena aplikacija (Produkcija)
+
+- **Spletna aplikacija (Frontend – Vercel):** https://suplenca-fork.vercel.app
+
+## CI/CD cevovod (GitHub Actions)
+
+Avtomatiziran cevovod (`.github/workflows/ci-cd.yml`) se sproži ob vsakem `push` in `pull_request` dogodku na vejo `main` ter vsebuje štiri faze:
+
+1. **`lint`** – preveri slog in kakovost kode za backend (**Ruff**, `backend/pyproject.toml`) in frontend (**ESLint**, `frontend/eslint.config.js`).
+2. **`build`** – namesti odvisnosti z uporabo predpomnjenja (`pip` in `npm` cache), prevede oz. zgradi backend in frontend ter shrani rezultata gradnje kot artefakta (`backend-build` in `frontend-dist`).
+3. **`test`** – izvede 17 avtomatiziranih testov za backend (**Pytest**, 12 testov) in frontend (**Node test runner**, 5 testov) ter shrani poročilo o pokritosti kode kot artefakt (`coverage-report`).
+4. **`deploy`** – se izvede samo ob `push` na vejo `main`, če so uspešno zaključene faze `lint`, `build` in `test`. Prenese že zgrajena artefakta iz faze `build` (brez ponovne gradnje) in ju namesti v okolje `production` (Render za backend in Vercel za frontend).
 
 ## Tehnologije
 
@@ -24,6 +39,7 @@ Projekt nastaja pri predmetu Razvoj informacijskih rešitev in storitev (FERI, 2
 - [Arhitektura in tehnološki sklad](docs/04-arhitektura-in-tehnoloski-sklad.md)
 - [Uporabniške zgodbe](docs/05-uporabniske-zgodbe.md)
 - [Wireframes](docs/06-wireframes.md)
+- [Pregled projekta](docs/07-pregled-projekta.md)
 - [Arhitekturne odločitve (ADR)](docs/adr/)
 
 ## Lokalni zagon
