@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from "react";
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 function MojeSuplence() {
   const [suplence, nastaviSuplence] = useState([]);
 
   // ob odprtju strani naloži suplence; backend ve iz žetona, kateri učitelj je prijavljen
   useEffect(() => {
-    fetch("http://localhost:8000/moje-suplence", {
+    fetch(API + "/moje-suplence", {
       headers: { Authorization: "Bearer " + localStorage.getItem("zeton") },
     })
       .then((o) => o.json())

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 function DnevniPregled() {
   const [datum, nastaviDatum] = useState("");
   const [ure, nastaviUre] = useState([]);              // izpadle ure izbranega dne
@@ -15,7 +17,7 @@ function DnevniPregled() {
   function naloziDan(izbranDatum) {
     nastaviDatum(izbranDatum);
     nastaviIzbrano(null);
-    fetch("http://localhost:8000/dnevni-pregled/" + izbranDatum, { headers: glava })
+    fetch(API + "/dnevni-pregled/" + izbranDatum, { headers: glava })
       .then((o) => o.json())
       .then(nastaviUre);
   }
@@ -24,14 +26,14 @@ function DnevniPregled() {
   function izberiUro(ura) {
     nastaviIzbrano(ura);
     nastaviSporocilo("");
-    fetch("http://localhost:8000/kandidati/" + ura.id, { headers: glava })
+    fetch(API + "/kandidati/" + ura.id, { headers: glava })
       .then((o) => o.json())
       .then(nastaviKandidate);
   }
 
     // gumb Ura odpade: status ure postane "odpadla", nato osveži pregled dneva
   async function uraOdpade() {
-    await fetch("http://localhost:8000/nadomescanja/" + izbrana.id + "/odpade", {
+    await fetch(API + "/nadomescanja/" + izbrana.id + "/odpade", {
       method: "PUT",
       headers: glava,
     });
@@ -40,7 +42,7 @@ function DnevniPregled() {
 
     // gumb Potrdi: izpadlo uro dodeli izbranemu kandidatu (US-05)
   async function potrdi(kandidat) {
-    const odgovor = await fetch("http://localhost:8000/nadomescanja/" + izbrana.id + "/potrdi", {
+    const odgovor = await fetch(API + "/nadomescanja/" + izbrana.id + "/potrdi", {
       method: "PUT",
       headers: { ...glava, "Content-Type": "application/json" },   // žeton + oblika podatkov
       body: JSON.stringify({ ucitelj_id: kandidat.id, vrsta: kandidat.vrsta, placana: kandidat.placana }),

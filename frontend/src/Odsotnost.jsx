@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 // razlogi za spustni meni (WF-03)
 const RAZLOGI = ["Bolniška", "Izobraževanje", "Službena pot", "Drugo"];
 
@@ -18,7 +20,7 @@ function Odsotnost() {
 
   // ob odprtju strani naloži seznam učiteljev
   useEffect(() => {
-    fetch("http://localhost:8000/ucitelji", { headers: glava }).then((o) => o.json()).then(nastaviUcitelje);
+    fetch(API + "/ucitelji", { headers: glava }).then((o) => o.json()).then(nastaviUcitelje);
   }, []);
 
   // spremeni eno polje obrazca
@@ -29,7 +31,7 @@ function Odsotnost() {
   // gumb Shrani odsotnost: pošlje podatke backendu in prikaže odgovor ali opozorilo
   async function shrani(dogodek) {
     dogodek.preventDefault();
-    const odgovor = await fetch("http://localhost:8000/odsotnosti", {
+    const odgovor = await fetch(API + "/odsotnosti", {
       method: "POST",
       headers: glava,
       body: JSON.stringify(odsotnost),

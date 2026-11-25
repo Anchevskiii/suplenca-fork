@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 // naslov = besedilo nad tabelo, pot = naslov v API (npr. "oddelki"), polja = imena stolpcev
 function Seznam({ naslov, pot, polja }) {
   const [vrstice, nastaviVrstice] = useState([]);      // podatki iz baze
@@ -16,7 +18,7 @@ function Seznam({ naslov, pot, polja }) {
 
   // prebere seznam iz backenda (GET)
   function nalozi() {
-    fetch("http://localhost:8000/" + pot, { headers: glava })
+    fetch(API + "/" + pot, { headers: glava })
       .then((odgovor) => odgovor.json())
       .then((podatki) => nastaviVrstice(podatki));
   }
@@ -32,7 +34,7 @@ function Seznam({ naslov, pot, polja }) {
   async function shrani(dogodek) {
     dogodek.preventDefault();
     const naslovKlica = urejamId === null ? pot : pot + "/" + urejamId;
-    await fetch("http://localhost:8000/" + naslovKlica, {
+    await fetch(API + "/" + naslovKlica, {
       method: urejamId === null ? "POST" : "PUT",
       headers: glava,
       body: JSON.stringify(obrazec),
@@ -50,7 +52,7 @@ function Seznam({ naslov, pot, polja }) {
 
   // gumb Izbriši: DELETE in ponovno nalaganje seznama
   async function izbrisi(id) {
-    await fetch("http://localhost:8000/" + pot + "/" + id, { method: "DELETE", headers: glava });
+    await fetch(API + "/" + pot + "/" + id, { method: "DELETE", headers: glava });
     nalozi();
   }
 

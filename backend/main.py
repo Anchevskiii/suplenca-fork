@@ -23,13 +23,32 @@ aplikacija = FastAPI(title="Suplenca API")
 # CORS: dovoli klice iz frontenda, ki teče na drugem naslovu (ADR 0001)
 aplikacija.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],   # naslov frontenda
+    allow_origins=["*"],                       # dovoli klice iz lokalnega in produkcijskega frontenda
     allow_methods=["*"],                       # vse metode (GET, POST …)
     allow_headers=["*"],                       # vse glave (npr. žeton)
 )
 
-# ob zagonu ustvari tabele iz modeli.py, če še ne obstajajo
+# ob zagonu ustvari tabele iz modeli.py, če še ne obstajajo, in doda privzete uporabnike, če je baza prazna
 Osnova.metadata.create_all(povezava)
+
+seja_zagon = Seja()
+if seja_zagon.query(Uporabnik).count() == 0:
+    geslo = "$2b$12$kK44OnKnxjq4N3kL1eboe.QpTVOTHAKIzl7eokHDARj0cCq8JJxVO"
+    seja_zagon.add_all([
+        Uporabnik(ime="Ana", priimek="Admin", email="admin@sola.si",
+                  geslo_hash=geslo, vloga="administrator", aktiven=True),
+        Uporabnik(ime="Olga", priimek="Organizator", email="organizator@sola.si",
+                  geslo_hash=geslo, vloga="organizator", aktiven=True),
+        Uporabnik(ime="Janez", priimek="Novak", email="novak@sola.si",
+                  geslo_hash=geslo, vloga="ucitelj", aktiven=True),
+        Uporabnik(ime="Dejan", priimek="Dijak", email="dijak@sola.si",
+                  geslo_hash=geslo, vloga="dijak", aktiven=True, oddelek_id=1),
+        Uporabnik(ime="Bojan", priimek="Bivsi", email="bivsi@sola.si",
+                  geslo_hash=geslo, vloga="ucitelj", aktiven=False),
+        ProstDan(datum=date(2026, 12, 25), opis="Božič"),
+    ])
+    seja_zagon.commit()
+seja_zagon.close()
 
 
 # preizkusni klic GET / – preveri, ali backend doseže bazo (#3)

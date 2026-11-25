@@ -7,6 +7,8 @@ import Organizator from "./Organizator";
 import MojeSuplence from "./MojeSuplence";
 import SpremembeUrnika from "./SpremembeUrnika";
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 function App() {
   const vloga = localStorage.getItem("vloga");
   const zeton = localStorage.getItem("zeton");
@@ -18,7 +20,7 @@ function App() {
   // ob odprtju strani vpraša backend, ali sme uporabnik videti to stran
   useEffect(() => {
     if (zeton === null || stran === "") return;
-    fetch("http://localhost:8000/dostop/" + stran, {
+    fetch(API + "/dostop/" + stran, {
       headers: { Authorization: "Bearer " + zeton },   // žeton pošljemo v glavi
     }).then((odgovor) => nastaviDostop(odgovor.ok));
   }, []);
