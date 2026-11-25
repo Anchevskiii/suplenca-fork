@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 // imena dni za spustni meni; dan v bazi = položaj v seznamu + 1 (ponedeljek = 1)
 const DNEVI = ["Ponedeljek", "Torek", "Sreda", "Četrtek", "Petek"];
 const URE = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -24,9 +26,9 @@ function Urnik() {
 
   // ob odprtju strani naloži oddelke, predmete in učitelje
   useEffect(() => {
-    fetch("http://localhost:8000/oddelki", { headers: glava }).then((o) => o.json()).then(nastaviOddelke);
-    fetch("http://localhost:8000/predmeti", { headers: glava }).then((o) => o.json()).then(nastaviPredmete);
-    fetch("http://localhost:8000/ucitelji", { headers: glava }).then((o) => o.json()).then(nastaviUcitelje);
+    fetch(API + "/oddelki", { headers: glava }).then((o) => o.json()).then(nastaviOddelke);
+    fetch(API + "/predmeti", { headers: glava }).then((o) => o.json()).then(nastaviPredmete);
+    fetch(API + "/ucitelji", { headers: glava }).then((o) => o.json()).then(nastaviUcitelje);
   }, []);
 
   // spremeni eno polje obrazca
@@ -36,7 +38,7 @@ function Urnik() {
 
     // naloži urnik izbranega oddelka (GET /urnik/{id})
   function naloziUrnik(oddelekId) {
-    fetch("http://localhost:8000/urnik/" + oddelekId, { headers: glava })
+    fetch(API + "/urnik/" + oddelekId, { headers: glava })
       .then((o) => o.json())
       .then(nastaviUrnik);
   }
@@ -50,7 +52,7 @@ function Urnik() {
   // gumb + Dodaj uro: pošlje uro backendu in prikaže odgovor ali opozorilo
   async function dodaj(dogodek) {
     dogodek.preventDefault();
-    const odgovor = await fetch("http://localhost:8000/urnik", {
+    const odgovor = await fetch(API + "/urnik", {
       method: "POST",
       headers: glava,
       body: JSON.stringify(ura),

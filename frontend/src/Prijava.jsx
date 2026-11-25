@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 function Prijava() {
   // stanja: kar uporabnik vpiše v obrazec in morebitno sporočilo o napaki
   const [email, nastaviEmail] = useState("");
@@ -12,7 +14,7 @@ function Prijava() {
   async function prijavi(dogodek) {
     dogodek.preventDefault(); // obrazec ne osveži strani
 
-    const odgovor = await fetch("http://localhost:8000/prijava", {
+    const odgovor = await fetch(API + "/prijava", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: email, geslo: geslo }),

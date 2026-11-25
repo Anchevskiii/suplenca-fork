@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 // datum v obliki "2026-11-03"; zamik = 0 za danes, 1 za jutri
 function datumCez(zamik) {
   const d = new Date();
@@ -15,7 +17,7 @@ function SpremembeUrnika() {
 
   // ob odprtju strani in ob kliku Danes/Jutri naloži spremembe za izbrani dan
   useEffect(() => {
-    fetch("http://localhost:8000/spremembe/" + datumCez(zamik), {
+    fetch(API + "/spremembe/" + datumCez(zamik), {
       headers: { Authorization: "Bearer " + localStorage.getItem("zeton") },
     })
       .then((o) => o.json())
