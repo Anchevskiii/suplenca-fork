@@ -1,6 +1,7 @@
 # baza.py – povezava s podatkovno bazo MySQL prek SQLAlchemy
 
 import os
+import sys
 from sqlalchemy import create_engine   # funkcija, ki pripravi povezavo z bazo
 from sqlalchemy.orm import sessionmaker, declarative_base
 
