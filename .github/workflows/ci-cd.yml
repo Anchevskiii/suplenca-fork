@@ -7,7 +7,30 @@ on:
     branches: [ main ]
 
 jobs:
-  placeholder:
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout kode
+        uses: actions/checkout@v4
+
+      - name: Nastavitev Pythona
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Backend lint (Ruff)
+        working-directory: ./backend
+        run: |
+          pip install ruff
+          ruff check .
+
+      - name: Nastavitev Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Frontend lint (ESLint)
+        working-directory: ./frontend
+        run: |
+          npm ci
+          npm run lint

@@ -5,3 +5,4 @@ pymysql        # gonilnik, s katerim se Python poveže z MySQL
 cryptography   # MySQL 8 pri prijavi zahteva šifriranje gesla, pymysql ga brez tega ne zna
 bcrypt         # varno zgoščevanje gesel (dokument 04)
 pyjwt          # izdelava žetonov JWT (dokument 04)
+ruff           # preverjanje sloga in kakovosti kode (lint)
