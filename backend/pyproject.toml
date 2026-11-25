@@ -3,4 +3,4 @@ line-length = 130
 
 [tool.ruff.lint]
 select = ["E", "F"]
-ignore = ["E712"]
+ignore = ["E712", "E402"]
